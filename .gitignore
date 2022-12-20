@@ -5,6 +5,9 @@
 # logs
 *.log
 
+# Shell script to set required envs
+set_env.sh
+
 # Directories
 .terraform/
 
