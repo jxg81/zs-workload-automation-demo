@@ -20,7 +20,7 @@ resource "zia_url_filtering_rules" "app_erp_rule" {
     state               = "ENABLED"
     action              = "ALLOW"
     order               = 2
-    url_categories      = ["erp_allow_list"]
+    url_categories      = [resource.zia_url_categories.erp_allow_list.id]
     protocols           = ["ANY_RULE"]
     users {
       id = data.zia_user_management.erp_app.id
