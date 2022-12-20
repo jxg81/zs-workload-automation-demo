@@ -1,28 +1,22 @@
-#data "zia_user_management" "erp_app" {
-#    name = "erp_app"
-#}
-
-resource "zia_url_categories" "erp_allow_list" {
+resource "zia_url_categories" "web_allow_list" {
   super_category      = "USER_DEFINED"
-  configured_name     = "erp_allow_list"
+  configured_name     = "web_allow_list"
   custom_category     = true
   type                = "URL_CATEGORY"
   urls = [
-    ".sap.com",
-    ".salesforce.com",
-    ".oracle.com"
+    ".edi_partner.com"
   ]
 }
 
-resource "zia_url_filtering_rules" "app_erp_rule" {
-    name                = "app_erp_rule"
-    description         = "allow erp app destinations"
+resource "zia_url_filtering_rules" "web_erp_rule" {
+    name                = "app_web_rule"
+    description         = "allow web app destinations"
     state               = "ENABLED"
     action              = "ALLOW"
-    order               = 4
-    url_categories      = [resource.zia_url_categories.erp_allow_list.id]
+    order               = 1
+    url_categories      = [resource.zia_url_categories.web_allow_list.id]
     protocols           = ["ANY_RULE"]
     users {
-      id = [resource.zia_user_management.erp_app.id]
+      id = [resource.zia_user_management.web_app.id]
     }
 }
