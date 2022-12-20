@@ -15,7 +15,7 @@ resource "zia_url_filtering_rules" "web_erp_rule" {
     action              = "ALLOW"
     order               = 1
     url_categories      = [resource.zia_url_categories.web_allow_list.id]
-    protocols           = ["ANY_RULE"]
+    protocols           = ["CONNECT","DELETE","GET","HEAD","OPTIONS","OTHER","POST","PUT","TRACE"]
     users {
       id = [resource.zia_user_management.web_app.id]
     }
