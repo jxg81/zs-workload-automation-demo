@@ -18,6 +18,6 @@ resource "zia_user_management" "john_ashcroft" {
     id = [data.zia_group_management.package_management.id, data.zia_group_management.partner_sites.id]
   }
   department {
-    id = data.zia_department_management.workload.id
+    id = data.zia_department_management.workloads.id
   }
 }
