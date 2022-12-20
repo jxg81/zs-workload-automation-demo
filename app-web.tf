@@ -1,6 +1,6 @@
-data "zia_user_management" "erp_app" {
-    name = "erp_app"
-}
+#data "zia_user_management" "erp_app" {
+#    name = "erp_app"
+#}
 
 resource "zia_url_categories" "erp_allow_list" {
   super_category      = "USER_DEFINED"
@@ -23,6 +23,6 @@ resource "zia_url_filtering_rules" "app_erp_rule" {
     url_categories      = [resource.zia_url_categories.erp_allow_list.id]
     protocols           = ["ANY_RULE"]
     users {
-      id = data.zia_user_management.erp_app.id
+      id = resource.zia_user_management.erp_app.id
     }
 }
