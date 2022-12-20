@@ -12,7 +12,7 @@ data "zia_group_management" "security_services" {
 
 resource "zia_user_management" "erp_app" {
   name         = "erp_app"
-  email        = "erp_app@workloads.local"
+  email        = "erp_app@zphyrs.com"
   password     = "P@ssw0rd123*"
   groups {
     id = [data.zia_group_management.package_management.id, data.zia_group_management.security_services.id]
