@@ -4,7 +4,8 @@ resource "zia_url_categories" "web_allow_list" {
   custom_category     = true
   type                = "URL_CATEGORY"
   urls = [
-    ".edi_partner.com"
+    ".facebook.com",
+    ".twitter.com"
   ]
 }
 

@@ -1,11 +1,15 @@
-# Compiled files
+# Compiled tf files
 *.tfstate
 *.tfstate.backup
 *.tfstate.lock.info*.terraform.lock.hcl
 # logs
 *.log
 
-# Shell script to set required envs
+# python cache
+__pycache__
+
+# environment variables
+.env
 set_env.sh
 
 # Directories

@@ -1,0 +1,7 @@
+{"user_state": [
+    {"name": "testing_user_3",
+    "email": "testing_user_3@zphyrs.com",
+    "password": "P@ssw0rd123*",
+    "groups": ["package_management", "security_services"]}
+            ],
+"app_state": []}
