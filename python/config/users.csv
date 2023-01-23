@@ -1,4 +1,3 @@
 name,email,groups
 payments_app,payments_app@zphyrs.com,package_management:security_services
 infra_app,infra_app@zphyrs.com,package_management:security_services
-test_user,test_user@zphyrs.com,package_management:security_services
