@@ -1,2 +1,2 @@
 ratelimit
-httpx
+httpx[http2]
