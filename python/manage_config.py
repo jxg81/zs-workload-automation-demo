@@ -12,7 +12,7 @@ from zscaler_api import get_url_pol, create_url_pol, delete_url_pol, update_url_
 
 def get_state() -> dict:
     """Retrieve state of managed configuration"""
-    with open(f'./config/state.json') as file:
+    with open(f'./state/state.json') as file:
             state = json.load(file)
     return state['user_state'], state['app_state']
 
@@ -22,7 +22,7 @@ def store_state(user_state:list[dict], app_state:list[dict]) -> None:
     state_file_content = {'user_state': user_state,
                         'app_state': app_state}
     # Write the state file to JSON
-    with open('./config/state.json', 'w') as state_file:
+    with open('./state/state.json', 'w') as state_file:
         json.dump(state_file_content, state_file)
 
 def get_target_user_config() -> list[dict]:
@@ -178,7 +178,7 @@ def process_app_config(app_state:list[dict]) -> list[dict]:
 
     return app_state
 
-if __name__ == "__main__":
+def main():
     # Create an HTTP client instance for all requests
     HTTP_CLIENT = create_http_client()
     
@@ -197,4 +197,5 @@ if __name__ == "__main__":
 
     HTTP_CLIENT.close()
 
-
+if __name__ == "__main__":
+    main()
