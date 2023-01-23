@@ -178,7 +178,7 @@ def process_app_config(app_state:list[dict]) -> list[dict]:
 
     return app_state
 
-def main():
+if __name__ == "__main__":
     # Create an HTTP client instance for all requests
     HTTP_CLIENT = create_http_client()
     
@@ -196,6 +196,3 @@ def main():
     store_state(user_state, app_state)
 
     HTTP_CLIENT.close()
-
-if __name__ == "__main__":
-    main()
