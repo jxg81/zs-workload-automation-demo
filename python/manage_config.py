@@ -2,26 +2,28 @@ import os
 import json
 import csv
 
-from const import USER_DEPARTMENT
-from zscaler_api import zs_api_call, create_http_client
+from const import USER_DEPARTMENT, USER_PASSWORD
+from zscaler_api import create_http_client, resolve_user_department, resolve_user_groups
+from zscaler_api import get_user, get_all_users, create_user, update_user, delete_user
+from zscaler_api import get_url_cat, create_url_cat, update_url_cat, delete_url_cat
+from zscaler_api import get_url_pol, create_url_pol, delete_url_pol, update_url_pol
 
-http_client = create_http_client()
 
-def resolve_user_department(department:str=USER_DEPARTMENT) -> dict:
-    """Get ID's for already created department name"""
-    user_department: list = zs_api_call('GET', f'/departments?search={department}', http_client)
-    return user_department[0]
 
-def resolve_user_groups(groups:list):
-    """Get ID's for already created group names"""
-    current_groups: list = zs_api_call('GET', '/groups', http_client)
-    target_groups = [group for group in current_groups if group['name'] in groups]
-    return target_groups
+def get_state() -> dict:
+    """Retrieve state of managed configuration"""
+    with open(f'./config/state.json') as file:
+            state = json.load(file)
+    return state['user_state'], state['app_state']
 
-def get_users():
-    """Get ID's for already created group names"""
-    users: list = zs_api_call('GET', '/users', http_client)
-    return users
+def store_state(user_state:list[dict], app_state:list[dict]) -> None:
+    """Store state back to file"""
+    # Format the state file
+    state_file_content = {'user_state': user_state,
+                        'app_state': app_state}
+    # Write the state file to JSON
+    with open('./config/state.json', 'w') as state_file:
+        json.dump(state_file_content, state_file)
 
 def get_target_user_config() -> list[dict]:
     """Get target user config"""
@@ -42,100 +44,157 @@ def get_target_app_config() -> list[dict]:
             target_app_config.append(json.load(file))
     return target_app_config
 
-def get_state() -> dict:
-    """Retrieve state of managed configuration"""
-    with open(f'./config/state.json') as file:
-            state = json.load(file)
-    return state['user_state'], state['app_state']
+def process_user_config(user_state:list[dict]) -> list[dict]:
+    """Process the user configuration by comparing target config to current state and perform adds, updates, deletes"""
+    # Pre-process target users for later matching
+    target_users = get_target_user_config()
+    for user in target_users:
+        user['groups'].sort()
 
-def create_user(user: dict):
-    """
-    {"name": user['name'],
-    "email": user['email'],
-    "groups": user['groups'],
-    "department": user['department'],
-    "password": user['password']}
-    """
-    result = zs_api_call('POST', '/users', http_client, payload=user)
+
+    # Format the user state to essential fields for comparison with target
+    user_state_summary = []
+    if user_state:
+        for user in user_state:
+            summary_user = {k:v for (k,v) in user.items() if k in ['name', 'email', 'groups']}
+            summary_user['groups'] = [group['name'] for group in summary_user['groups']]
+            summary_user['groups'].sort()
+            user_state_summary.append(summary_user)
+    user_state_name_list = [user['name'] for user in user_state_summary]
     
-def delete_user(user: dict):
-    """
-    {"name": user['name'],
-    "email": user['email'],
-    "groups": user['groups'],
-    "department": user['department'],
-    "password": user['password']}
-    """
-    result = zs_api_call('DELETE', f'/users{user["id"]}', http_client)
-
-def create_url_cat(urls: list):
-    """
-    {
-    "id": "ANY",
-    "configuredName": "string",
-    "urls": [
-        "string"
-    ],
-    "customCategory": True,
-    "type": "URL_CATEGORY"
-    }
-    """
-    formatted_payload = {'superCategory': 'USER_DEFINED',
-                        "configuredName": "testcat4",
-                        "urls": [".zscaler.com",
-                                ".github.com"],
-                        "customCategory": True,
-                        "type": "URL_CATEGORY"}
-    result = zs_api_call('POST', '/urlCategories', http_client, payload=formatted_payload)
-    return result
-
-pre_format_users = [{'name': 'testing_user_1',
-                   'email': 'testing_user_1@zphyrs.com',
-                   'password': 'P@ssw0rd123*',
-                   'groups': ['package_management', 'security_services']},
-                    {'name': 'testing_user_2',
-                   'email': 'testing_user_2@zphyrs.com',
-                   'password': 'P@ssw0rd123*',
-                   'groups': ['package_management', 'security_services']},
-                    {'name': 'testing_user_3',
-                   'email': 'testing_user_3@zphyrs.com',
-                   'password': 'P@ssw0rd123*',
-                   'groups': ['package_management', 'security_services']}]
-
-def process_config(users:list[dict]=pre_format_users):
-    user_state, app_state = get_state()
-    department = resolve_user_department()
-    for user in users:
-        if user in user_state:
-            print(f'skipping - {user}')
+    # Create containers to hold user change data for later state updates
+    created_user_configs = []
+    modified_user_configs = []
+    modified_user_ids = []
+    deleted_user_ids = []
+    
+    # Remove users that have been deleted from user config 
+    for existing_user in user_state_summary:
+        if existing_user['name'] not in [user['name'] for user in target_users]:
+            user_id = [user['id'] for user in user_state if user['name'] == existing_user['name']][0]
+            print(f'deleting user {existing_user}')
+            result = delete_user(user_id, HTTP_CLIENT)
+            deleted_user_ids.append(user_id)
+    
+    # Create new users or modify existing users based on user config
+    for target_user in target_users:
+        if target_user in user_state_summary:
+            print(f'skipping user - {target_user}')
             continue
-        user['groups'] = resolve_user_groups(user['groups'])
-        user['department'] = department
-        print(result)
-    for app in app_state:
-        pass
+        elif target_user['name'] in user_state_name_list:
+            target_user['id'] = [user['id'] for user in user_state if user['name'] == target_user['name']][0]
+            target_user['department'] = USER_DEPARTMENT_RESOLVED
+            target_user['groups'] = resolve_user_groups(target_user['groups'], HTTP_CLIENT)
+            print(f'modifying user {target_user}')
+            target_user.update({'password': USER_PASSWORD})
+            result = update_user(target_user, HTTP_CLIENT)
+            modified_user_configs.append(result)
+            modified_user_ids.append(target_user['id'])
+        else:
+            print(f'creating user {target_user}')
+            target_user['department'] = USER_DEPARTMENT_RESOLVED
+            target_user['groups'] = resolve_user_groups(target_user['groups'], HTTP_CLIENT)
+            result = create_user(target_user, HTTP_CLIENT)
+            target_user.update({'password': USER_PASSWORD})
+            created_user_configs.append(result)
 
-#print(zs_api_call('GET', '/urlCategories?customOnly=True', http_client))
-print(create_url_cat('blah'))
-http_client.close()
-#user = {'name': 'test_user',
-#        'email': 'test_user@zphyrs.com',
-#        'groups': [{'id': 63108494, 'name': 'package_management'},
-#                   {'id': 63108602, 'name': 'security_services'}],
-#        'department': {'id': 63108466, 'name': 'workloads'},
-#        'password': 'P@ssw0rd123*'}
-#result = zs_api_call('POST', '/users', AUTH_TOKEN, payload=user)
-#user.update('id': result)
-#print(result)
-#print(get_target_user_state())
-#print(get_target_app_state())
+    # Remove deleted and modified users from user state
+    user_state = [user for user in user_state if user['id'] not in deleted_user_ids and user['id'] not in modified_user_ids]
+    
+    # Update user state with new and modified user details
+    user_state = user_state + created_user_configs + modified_user_configs
+    
+    # Get rid of any password information in the user state store before writing
+    for user in user_state:
+        user.pop('password', None)
 
-formatted_payload = {
-  "id": "ANY",
-  "configuredName": "string",
-  "urls": [
-    "string"
-  ],
-  "customCategory": True,
-  "type": "URL_CATEGORY"
-}
+    return user_state
+
+def process_app_config(app_state:list[dict]) -> list[dict]:
+    """Process the app configuration by comparing target config to current state and perform adds, updates, deletes"""
+
+    # Pre-process target app for later matching
+    target_apps = get_target_app_config()
+    for target_app in target_apps:
+        target_app['urls'].sort()
+        target_app['users'].sort()
+
+    # Format the app state to essential fields for comparison with target
+    app_state_summary = []
+    if app_state:
+        for target_app in app_state:
+            summary_app = {'name': target_app['name'], 'users': target_app['policy']['users'], 'urls': target_app['category']['urls']}
+            summary_app['users'] = [user['name'] for user in summary_app['users']]
+            summary_app['urls'].sort()
+            summary_app['users'].sort()
+            app_state_summary.append(summary_app)
+    app_state_name_list = [app['name'] for app in app_state_summary]
+    
+    # Create containers to hold app change data for later state updates
+    created_app_configs = []
+    deleted_app_configs = []
+    modified_app_configs =[]
+    
+    # Remove apps that have been deleted from app config 
+    for existing_app in app_state:
+        if existing_app['name'] not in [app['name'] for app in target_apps]:
+            print(f'deleting app - {existing_app}')
+            delete_url_pol(existing_app['policy']['id'], HTTP_CLIENT)
+            delete_url_cat(existing_app['category']['id'], HTTP_CLIENT)
+            deleted_app_configs.append(existing_app)
+    
+    # Create new url cats or modify existing url cats based on app config
+    for target_app in target_apps:
+        if target_app in app_state_summary:
+            print(f'skipping app - {target_app}')
+            continue
+        elif target_app['name'] in app_state_name_list:
+            print(f'modifying app {target_app}')
+            for existing_app in app_state:
+                if existing_app['name'] == target_app['name']:
+                    category_config = existing_app['category']
+                    category_config['urls'] = target_app['urls']
+                    policy_config = existing_app['policy']
+                    user_content = []
+                    for user in target_app['users']:
+                        user_content.append(get_user(user, HTTP_CLIENT)[0])
+                    policy_config['users'] = user_content
+                    result_cat = update_url_cat(category_config, HTTP_CLIENT)
+                    result_pol = update_url_pol(policy_config, HTTP_CLIENT)
+                    modified_app_configs.append({'name': target_app['name'], 'category': result_cat, 'policy': result_pol,})
+        else:
+            print(f'creating app {target_app}')
+            url_cat = create_url_cat(target_app['name'], target_app['urls'], HTTP_CLIENT)
+            url_pol = create_url_pol(target_app['name'], target_app['users'], url_cat['id'], HTTP_CLIENT)
+            created_app_configs.append({'name': target_app['name'], 'category': url_cat, 'policy': url_pol,})
+    
+       
+    # Remove deleted and modified apps from app state
+    state_remove_list = [app['name'] for app in deleted_app_configs] + [app['name'] for app in modified_app_configs]
+    app_state = [app for app in app_state if app['name'] not in state_remove_list]
+        
+    # Update user state with new and modified user details
+    app_state = app_state + created_app_configs + modified_app_configs
+
+    return app_state
+
+if __name__ == "__main__":
+    # Create an HTTP client instance for all requests
+    HTTP_CLIENT = create_http_client()
+    
+    # Resolve the ID of the department that new users will be place into
+    USER_DEPARTMENT_RESOLVED = resolve_user_department(USER_DEPARTMENT, HTTP_CLIENT)
+    
+    # Get current user state from state store
+    user_state, app_state = get_state()
+
+    # Process configuration updates
+    user_state = process_user_config(user_state)
+    app_state = process_app_config(app_state)
+
+    # Store the new state information
+    store_state(user_state, app_state)
+
+    HTTP_CLIENT.close()
+
+

@@ -1,6 +1,5 @@
 {"name": "payments_app",
+"users": ["payments_app"],
 "urls": [".paypal.com",
-        ".apple.com",
-        ".google.com",
         ".mastercard.com",
         ".visa.com"]}

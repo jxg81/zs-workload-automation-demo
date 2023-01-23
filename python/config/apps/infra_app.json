@@ -1,3 +1,4 @@
 {"name": "infra_app",
+"users": ["infra_app"],
 "urls": [".zscaler.com",
         ".github.com"]}
