@@ -5,7 +5,8 @@ resource "zia_url_categories" "web_allow_list" {
   type                = "URL_CATEGORY"
   urls = [
     ".facebook.com",
-    ".twitter.com"
+    ".twitter.com",
+    ".instagram.com"
   ]
 }
 
