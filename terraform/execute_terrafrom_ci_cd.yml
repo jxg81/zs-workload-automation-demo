@@ -1,0 +1,26 @@
+version: '1.0'
+stages:
+  - checkout
+  - prepare   
+  - deploy
+steps:
+  main_clone:
+    title: Cloning main repository...
+    stage: checkout
+    type: git-clone
+    repo: 'my-repo'
+    revision: master
+    git: github      
+  DeployWithTerraform:
+    env:
+      ZIA_USERNAME: xxx
+      ZIA_PASSWORD: xx
+      ZIA_API_KEY: xxx
+      ZIA_CLOUD: zscaler
+      TF_VAR_PASSWORD: xxx
+    image: hashicorp/terraform:0.12.0
+    title: Deploying Terraform plan
+    stage: deploy
+    commands:
+      - terraform init
+      - terraform apply -auto-approve 
