@@ -19,7 +19,7 @@ data "zia_group_management" "security_services" {
 }
 
 data "zia_user_management" "julian" {
-  email = "julian@zphyrs.com"
+  id = 58693867
 }
 resource "zia_user_management" "erp_app" {
   name         = "erp_app"
