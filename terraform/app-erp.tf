@@ -15,6 +15,9 @@ resource "zia_url_filtering_rules" "app_erp_rule" {
     description         = "allow erp app destinations"
     state               = "ENABLED"
     action              = "ALLOW"
+    locations {
+      id = [resource.zia_location_management.home.id]
+    }
     order               = 1
     url_categories      = [resource.zia_url_categories.erp_allow_list.id]
     protocols           = ["ANY_RULE"]

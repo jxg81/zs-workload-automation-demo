@@ -3,6 +3,9 @@ variable "PASSWORD" {
     description = "Password to ve used for all user creation"
 }
 
+data "zia_location_management" "home" {
+  name = "Home"
+}
 data "zia_department_management" "workloads" {
   name = "workloads"
 
