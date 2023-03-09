@@ -18,6 +18,9 @@ data "zia_group_management" "security_services" {
   name = "security_services"
 }
 
+data "zia_user_management" "julian" {
+  name = "Julian Greensmith"
+}
 resource "zia_user_management" "erp_app" {
   name         = "erp_app"
   email        = "erp_app@zphyrs.com"
