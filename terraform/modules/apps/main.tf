@@ -27,7 +27,7 @@ resource "zia_url_filtering_rules" "filtering_rule" {
     state               = "ENABLED"
     action              = "ALLOW"
     order               = 1
-#    url_categories      = [CUSTOM_01]
+    url_categories      = [zia_url_categories.custom_cat.id]
     protocols           = ["ANY_RULE"]
     request_methods     = [ "CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "OTHER", "POST", "PUT", "TRACE"]
     locations {
