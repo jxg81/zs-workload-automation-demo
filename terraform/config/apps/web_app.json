@@ -1,0 +1,8 @@
+{"name": "app_web",
+"urls": [".facebook.com",
+        ".twitter.com",
+        ".instagram.com"],
+"username": "web_app",
+"locations": ["Home"],
+"description": "This is a Web App"
+}

@@ -1,0 +1,8 @@
+{"name": "app_erp",
+"urls": [".sap.com",
+      ".salesforce.com",
+      ".oracle.com"],
+"username": "erp_app",
+"locations": ["Home"],
+"description": "This is an ERP App"
+}
