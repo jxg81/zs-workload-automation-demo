@@ -22,18 +22,30 @@ terraform {
 provider "zia" {}
 
 locals {
-    json_files = fileset(path.module, "./config/apps/*.json")   
-    json_data  = [ for f in local.json_files : jsondecode(file("${path.module}/${f}")) ]
-    
+    domain = "zphyrs.com"
+    apps_json_files = fileset(path.module, "./config/apps/*.json")   
+    apps_data  = [ for f in local.apps_json_files : jsondecode(file("${path.module}/${f}")) ]
+    users_data = csvdecode(file("./config/users.csv"))
+}
+variable "PASSWORD" {
+    type        = string
+    description = "Password to ve used for all user creation"
 }
 
+module "users" {
+  for_each = { for f in local.users_data : f.name => f }
+  source = "./modules/users"
+  name = each.value.name
+  groups = toset(split(":", each.value.groups))
+  password = var.PASSWORD
+  domain = local.domain
+}
 module "application" {
-  for_each = { for f in local.json_data : f.name => f }
+  for_each = { for f in local.apps_data : f.name => f }
   source = "./modules/apps"
   name = each.value.name
   urls = each.value.urls
   username = each.value.username
   locations = each.value.locations
   description = each.value.description
-
 }
