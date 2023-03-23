@@ -48,5 +48,5 @@ module "application" {
   description = each.value.description
 }
 output "test" {
-  value = module.users.user_data
+  value = module.users.some_data
 }
