@@ -50,5 +50,5 @@ module "application" {
 
 output "test" {
   value = module.users
-  sensitive = false
+  sensitive = true
 }
