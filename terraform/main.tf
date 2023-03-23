@@ -13,15 +13,7 @@ terraform {
       tags = ["zs-workload-automation-demo"]
     }
   }
-  required_providers {
-    zia = {
-      source = "zscaler/zia"
-      version = "2.3.1"
-    }
-  }
 }
-
-provider "zia" {}
 
 locals {
     # Change this domain name to match the domain used in your ZIA tenant which you would like the users created in

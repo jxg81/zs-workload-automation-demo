@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     zia = {
-      source = "zscaler/zia"
-      version = "2.3.1"
+      version = "2.4.6"
+      source  = "zscaler/zia"
     }
   }
 }
@@ -12,27 +12,38 @@ data "zia_location_management" "location" {
   name = each.value
 }
 
-resource "zia_url_categories" "custom_cat" {
-    super_category      = "USER_DEFINED"
-    configured_name     = join("-", [var.name, "allow_list"])
-    custom_category     = true
-    type                = "URL_CATEGORY"
-    urls                = var.urls
+data "zia_firewall_filtering_network_service" "http" {
+  name = "HTTP"
 }
 
-resource "zia_url_filtering_rules" "filtering_rule" {
-    name                = join("-", [var.name, "rule"])
-    description         = var.description
-    state               = "ENABLED"
+data "zia_firewall_filtering_network_service" "https" {
+  name = "HTTPS"
+}
+
+resource "zia_firewall_filtering_destination_groups" "dstn_domain_group" {
+  name        = join("-", [var.name, "destination_dommain_list"])
+  description = join(" ", ["Allowed domains for application", var.name])
+  type        = "DSTN_DOMAIN"
+  addresses = var.urls
+}
+
+resource "zia_firewall_filtering_rule" "example" {
+    name                = join("-", [var.name, "application policy"])
+    description         = join(" ", ["Policy for application", var.name])
     action              = "ALLOW"
+    state               = "ENABLED"
     order               = 1
-    url_categories      = [zia_url_categories.custom_cat.id]
-    protocols           = ["ANY_RULE"]
-    request_methods     = [ "CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "OTHER", "POST", "PUT", "TRACE"]
+    enable_full_logging = true
     locations {
       id = [for item in data.zia_location_management.location : item.id]
     }
+    dest_ip_groups {
+      id = [resource.zia_firewall_filtering_destination_groups.dstn_domain_group.id]
+    }
+    nw_services {
+        id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
+    }
+}
 #    users {
 #      id = [resource.zia_user_management.user.id]
 #    }
-}

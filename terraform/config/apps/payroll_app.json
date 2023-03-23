@@ -1,6 +1,6 @@
 {"name": "app_payroll",
-"urls": [".adp.com",
-        ".xero.com"],
+"urls": ["*.adp.com",
+        "*.xero.com"],
 "username": "payroll_app",
 "locations": ["Home"],
 "description": "This is a Payroll App"
