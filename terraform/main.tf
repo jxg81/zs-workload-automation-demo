@@ -43,12 +43,18 @@ module "application" {
   source = "./modules/apps"
   name = each.value.name
   urls = each.value.urls
-  username = each.value.username
+  user = module.users[each.value.username].user_data
   locations = each.value.locations
   description = each.value.description
+
 }
 
 output "test" {
   value = module.users
+  sensitive = true
+}
+
+output "test2" {
+  value = module.users[erp_app].userdata
   sensitive = true
 }

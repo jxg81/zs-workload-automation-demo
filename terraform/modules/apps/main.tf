@@ -42,7 +42,7 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     nw_services {
         id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
     }
-#    users {
-#      id = [resource.zia_user_management.user.id]
-#    }
+    users {
+        id = [var.user.id]
+    }
 }
