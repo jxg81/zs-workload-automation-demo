@@ -1,3 +1,3 @@
-output "user_id" {
-    value = zia_user_management.user.id
+output "user_data" {
+    value = zia_user_management.user
 }
