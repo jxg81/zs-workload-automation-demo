@@ -55,6 +55,6 @@ output "test" {
 }
 
 output "test2" {
-  value = module.users[erp_app].userdata
+  value = module.users[erp_app].user_data
   sensitive = true
 }
