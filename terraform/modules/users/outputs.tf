@@ -1,3 +1,3 @@
-output "user_data" {
-  value = toset([resource.zia_user_management.user.id,resource.zia_user_management.user.name])
+output "user_id" {
+    value = zia_user_management.user.id
 }

@@ -32,7 +32,6 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     description         = join(" ", ["Policy for application", var.name])
     action              = "ALLOW"
     state               = "ENABLED"
-    order               = 1
     enable_full_logging = true
     locations {
       id = [for item in data.zia_location_management.location : item.id]
