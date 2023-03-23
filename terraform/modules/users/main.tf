@@ -27,3 +27,11 @@ resource "zia_user_management" "user" {
     id = data.zia_department_management.workloads.id
   }
 }
+
+output "user_data" {
+    value = zia_user_management.user
+}
+
+output "somedata" {
+    value = "random string"
+}
