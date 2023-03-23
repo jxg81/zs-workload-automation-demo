@@ -8,9 +8,14 @@ variable "urls" {
     description = "List of permitted URLs"
 }
 
-variable "user" {
-    type = map(any)
-    description = "User data for user mapping"
+variable "user_id" {
+    type = number
+    description = "User id for user mapping"
+}
+
+variable "username" {
+    type = string
+    description = "Username for user mapping"
 }
 
 variable "locations" {
