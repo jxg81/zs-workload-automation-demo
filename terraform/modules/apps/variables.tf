@@ -9,7 +9,7 @@ variable "urls" {
 }
 
 variable "user" {
-    type = object(any)
+    type = map(any)
     description = "User data for user mapping"
 }
 
