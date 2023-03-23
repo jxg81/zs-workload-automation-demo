@@ -27,7 +27,7 @@ resource "zia_firewall_filtering_destination_groups" "dstn_domain_group" {
   addresses = var.urls
 }
 
-resource "zia_firewall_filtering_rule" "example" {
+resource "zia_firewall_filtering_rule" "firewall_rule" {
     name                = join("-", [var.name, "application policy"])
     description         = join(" ", ["Policy for application", var.name])
     action              = "ALLOW"
@@ -43,7 +43,7 @@ resource "zia_firewall_filtering_rule" "example" {
     nw_services {
         id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
     }
-}
 #    users {
 #      id = [resource.zia_user_management.user.id]
 #    }
+}
