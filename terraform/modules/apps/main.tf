@@ -21,8 +21,8 @@ data "zia_firewall_filtering_network_service" "https" {
 }
 
 resource "zia_firewall_filtering_destination_groups" "dstn_domain_group" {
-  name        = join("-", [var.name, "destination_dommain_list"])
-  description = join(" ", ["Allowed domains for application", var.name])
+  name        = join("-", [var.name, "destination_wildcard_fqdn_list"])
+  description = join(" ", ["Allowed wildcard fqdns for application", var.name])
   type        = "DSTN_DOMAIN"
   addresses = var.urls
 }

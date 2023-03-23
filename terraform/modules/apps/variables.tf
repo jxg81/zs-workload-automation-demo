@@ -13,11 +13,6 @@ variable "user_id" {
     description = "User id for user mapping"
 }
 
-variable "username" {
-    type = string
-    description = "Username for user mapping"
-}
-
 variable "locations" {
     type        = set(string)
     description = "Locations permitted for access to URL list"

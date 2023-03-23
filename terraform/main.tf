@@ -44,13 +44,6 @@ module "application" {
   name = each.value.name
   urls = each.value.urls
   user_id = module.users[each.value.username].user_data["user_id"]
-  username = each.value.username
   locations = each.value.locations
   description = each.value.description
-
-}
-
-output "test" {
-  value = module.users
-  sensitive = true
 }
