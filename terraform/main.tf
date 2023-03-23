@@ -53,8 +53,3 @@ output "test" {
   value = module.users
   sensitive = true
 }
-
-output "test2" {
-  value = module.users[erp_app].user_data
-  sensitive = true
-}
