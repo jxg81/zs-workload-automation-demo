@@ -47,6 +47,7 @@ module "application" {
   locations = each.value.locations
   description = each.value.description
 }
+
 output "test" {
-  value = module.users.some_data
+  value = module.users
 }
