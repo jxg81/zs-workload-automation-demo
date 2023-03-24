@@ -13,8 +13,21 @@ terraform {
       tags = ["zs-workload-automation-demo"]
     }
   }
+  required_providers {
+    zia = {
+      version = "2.4.6"
+      source  = "zscaler/zia"
+    }
+    vault = {
+      source = "hashicorp/vault"
+      version = "3.14.0"
+    }
+  }
 }
 
+provider "vault" {
+  skip_tls_verify = true
+}
 locals {
     # Change this domain name to match the domain used in your ZIA tenant which you would like the users created in
     domain = "zphyrs.com"

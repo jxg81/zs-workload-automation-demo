@@ -1,7 +1,6 @@
 terraform {
   required_providers {
     zia = {
-      version = "2.4.6"
       source  = "zscaler/zia"
     }
   }

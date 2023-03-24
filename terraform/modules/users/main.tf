@@ -1,11 +1,11 @@
-terraform {
+  terraform {
   required_providers {
     zia = {
-      version = "2.4.6"
       source  = "zscaler/zia"
     }
   }
-}
+  }
+
 resource "random_password" "user_password" {
   length = 16
   special = true
@@ -33,4 +33,17 @@ resource "zia_user_management" "user" {
   department {
     id = data.zia_department_management.workloads.id
   }
+}
+
+resource "vault_kv_secret_v2" "vault_store_user_pass" {
+  mount                      = "kv"
+  name                       = var.name
+  delete_all_versions        = true
+  data_json                  = jsonencode(
+  {
+    username       = resource.zia_user_management.user.name,
+    password       = resource.zia_user_management.user.password,
+    id             = resource.zia_user_management.user.id
+  }
+  )
 }
