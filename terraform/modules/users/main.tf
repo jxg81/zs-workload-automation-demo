@@ -6,6 +6,13 @@ terraform {
     }
   }
 }
+resource "random_password" "user_password" {
+  length = 16
+  special = true
+  keepers = {
+    user_name = var.name
+  }
+} 
 
 data "zia_group_management" "group" {
   for_each = var.groups
@@ -19,7 +26,7 @@ data "zia_department_management" "workloads" {
 resource "zia_user_management" "user" {
   name         = var.name
   email        = join("@", [var.name, var.domain])
-  password     = var.password
+  password     = resource.random_password.user_password.result
   groups {
     id = [for item in data.zia_group_management.group : item.id]
   }

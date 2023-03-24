@@ -22,20 +22,12 @@ locals {
     apps_data  = [ for f in local.apps_json_files : jsondecode(file("${path.module}/${f}")) ]
     users_data = csvdecode(file("./config/users.csv"))
 }
-# In this basic example the password for all users is set to the same value
-# The value is taken from an environment variable setting in the terrafrom cloud workspace called "PASSWORD"
-# In a real world deployment you would want to extract this data from a secure vault
-variable "PASSWORD" {
-    type        = string
-    description = "Password to ve used for all user creation"
-}
 
 module "users" {
   for_each = { for f in local.users_data : f.name => f }
   source = "./modules/users"
   name = each.value.name
   groups = toset(split(":", each.value.groups))
-  password = var.PASSWORD
   domain = local.domain
 }
 module "application" {
