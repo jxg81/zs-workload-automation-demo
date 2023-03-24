@@ -41,9 +41,14 @@ resource "vault_kv_secret_v2" "vault_store_user_pass" {
   delete_all_versions        = true
   data_json                  = jsonencode(
   {
-    username       = resource.zia_user_management.user.name,
     password       = resource.zia_user_management.user.password,
-    id             = resource.zia_user_management.user.id
   }
   )
+    custom_metadata {
+    data = {
+      id = resource.zia_user_management.user.id
+      username = resource.zia_user_management.user.name,
+      email = resource.zia_user_management.user.email
+    }
+  }
 }
