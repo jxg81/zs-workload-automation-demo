@@ -42,7 +42,6 @@ resource "vault_kv_secret_v2" "vault_store_user_pass" {
   data_json = jsonencode(
     {
       password = resource.zia_user_management.user.password,
-      id       = resource.zia_user_management.user.id
     }
   )
   custom_metadata {

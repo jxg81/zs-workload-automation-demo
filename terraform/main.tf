@@ -57,12 +57,6 @@ module "application" {
   urls = each.value.urls
   locations = each.value.locations
   description = each.value.description
-  # If using vault store, pass in username and vault store data to retrieve user id
   username = each.value.username
   vault_store = local.vault_store
-}
-
-output "test" {
-  value = module.application
-  sensitive = true
 }
