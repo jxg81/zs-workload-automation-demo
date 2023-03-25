@@ -30,3 +30,4 @@ set_env.sh
 
 # Ignored vscode files
 .vscode/
+terraform/.terraform.lock.hcl

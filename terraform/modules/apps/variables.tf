@@ -8,12 +8,6 @@ variable "urls" {
     description = "List of permitted URLs"
 }
 
-# Required if not using vault
-variable "user_id" {
-    type = number
-    description = "User id for user mapping"
-}
-
 variable "username" {
     type = string
     description = "Username for user mapping"

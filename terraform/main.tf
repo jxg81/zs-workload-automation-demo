@@ -60,9 +60,8 @@ module "application" {
   # If using vault store, pass in username and vault store data to retrieve user id
   username = each.value.username
   vault_store = local.vault_store
-  # If not using vault store, user and app creation will be coupled and ID will be collected from output of users module
-  user_id = module.users[each.value.username].user_data["user_id"]
 }
+
 output "test" {
   value = module.application
   sensitive = true

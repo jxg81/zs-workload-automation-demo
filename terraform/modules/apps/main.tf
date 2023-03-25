@@ -51,12 +51,8 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
         id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
     }
     users {
-        id = [var.user_id]
+        id = [tonumber(data.vault_generic_secret.user_data.data.id)]
     }
-# App creation decoupled from user creation by utilising data retrival from vault
-#    users {
-#        id = [tonumber(data.vault_generic_secret.user_data.data.id)]
-#    }
 }
 
 output "test_output1" {
