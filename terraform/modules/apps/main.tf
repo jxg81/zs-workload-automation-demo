@@ -6,6 +6,10 @@ terraform {
   }
 }
 
+data "vault_generic_secret" "user_data" {
+  path = join("/", ["kv", var.username])
+}
+
 data "zia_location_management" "location" {
   for_each = var.locations
   name = each.value
@@ -44,4 +48,12 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     users {
         id = [var.user_id]
     }
+}
+
+output "datafromuserstorejson" {
+  value = data.vault_generic_secret.user_data.data_json
+}
+
+output "datafromuserstore" {
+  value = data.vault_generic_secret.user_data.data
 }
