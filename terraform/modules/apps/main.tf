@@ -50,10 +50,10 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     }
 }
 
-output "datafromuserstorejson" {
-  value = data.vault_generic_secret.user_data.data_json
+output "data_id" {
+  value = data.vault_generic_secret.user_data.data.id
 }
 
-output "datafromuserstore" {
-  value = data.vault_generic_secret.user_data.data
+output "data_password" {
+  value = data.vault_generic_secret.user_data.data.password
 }

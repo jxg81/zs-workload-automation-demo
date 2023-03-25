@@ -44,6 +44,9 @@ module "users" {
   domain = local.domain
 }
 module "application" {
+  depends_on = [
+    module.users
+  ]
   for_each = { for f in local.apps_data : f.name => f }
   source = "./modules/apps"
   name = each.value.name
