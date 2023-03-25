@@ -31,22 +31,23 @@ resource "zia_firewall_filtering_destination_groups" "dstn_domain_group" {
   addresses = var.urls
 }
 
-#resource "zia_firewall_filtering_rule" "firewall_rule" {
-#    name                = join("-", [var.name, "application policy"])
-#    description         = join(" ", ["Policy for application", var.name])
-#    action              = "ALLOW"
-#    state               = "ENABLED"
-#    enable_full_logging = true
-#    locations {
-#      id = [for item in data.zia_location_management.location : item.id]
-#    }
-#    dest_ip_groups {
-#      id = [resource.zia_firewall_filtering_destination_groups.dstn_domain_group.id]
-#    }
-#    nw_services {
-#        id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
-#    }
-#    users {
-#        id = [tonumber(data.vault_kv_secret_v2.test_user_data.custom_metadata.id)]
-#    }
-#}
+resource "zia_firewall_filtering_rule" "firewall_rule" {
+    name                = join("-", [var.name, "application policy"])
+    description         = join(" ", ["Policy for application", var.name])
+    order               = 0
+    action              = "ALLOW"
+    state               = "ENABLED"
+    enable_full_logging = true
+    locations {
+      id = [for item in data.zia_location_management.location : item.id]
+    }
+    dest_ip_groups {
+      id = [resource.zia_firewall_filtering_destination_groups.dstn_domain_group.id]
+    }
+    nw_services {
+        id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
+    }
+    users {
+        id = [tonumber(data.vault_kv_secret_v2.test_user_data.custom_metadata.id)]
+    }
+}
