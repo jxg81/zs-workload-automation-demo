@@ -8,6 +8,7 @@ variable "urls" {
     description = "List of permitted URLs"
 }
 
+# Required if not using vault
 variable "user_id" {
     type = number
     description = "User id for user mapping"
@@ -28,3 +29,7 @@ variable "description" {
     description = "Freeform description of application"
 }
 
+variable "vault_store" {
+    type        = string
+    description = "Vault store name"
+}

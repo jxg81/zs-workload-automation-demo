@@ -10,6 +10,11 @@ data "vault_generic_secret" "user_data" {
   path = join("/", ["kv", var.username])
 }
 
+data "vault_kv_secret_v2" "test_user_data" {
+  mount = var.vault_store
+  name = var.username
+}
+
 data "zia_location_management" "location" {
   for_each = var.locations
   name = each.value
@@ -48,12 +53,20 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     users {
         id = [var.user_id]
     }
+# App creation decoupled from user creation by utilising data retrival from vault
+#    users {
+#        id = [tonumber(data.vault_generic_secret.user_data.data.id)]
+#    }
 }
 
-output "data_id" {
-  value = data.vault_generic_secret.user_data.data.id
+output "test_output1" {
+  value = data.vault_kv_secret_v2.test_user_data.custom_metadata.email
 }
 
-output "data_password" {
-  value = data.vault_generic_secret.user_data.data.password
+output "test_output2" {
+  value = data.vault_kv_secret_v2.test_user_data.data.password
+}
+
+output "test_output3" {
+  value = data.vault_kv_secret_v2.test_user_data.custom_metadata.id
 }

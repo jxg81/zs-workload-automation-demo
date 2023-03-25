@@ -10,3 +10,7 @@ variable "groups" {
     type        = set(string)
     description = "User group assignments"
 }
+variable "vault_store" {
+    type        = string
+    description = "Vault store name"
+}

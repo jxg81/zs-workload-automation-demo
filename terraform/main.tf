@@ -26,11 +26,14 @@ terraform {
 }
 
 provider "vault" {
+  # Vault token and address taken from env variables
   skip_tls_verify = true
 }
 locals {
     # Change this domain name to match the domain used in your ZIA tenant which you would like the users created in
     domain = "zphyrs.com"
+    # Change this to macth the name of your vault store
+    vault_store = "kv"
     apps_json_files = fileset(path.module, "./config/apps/*.json")   
     apps_data  = [ for f in local.apps_json_files : jsondecode(file("${path.module}/${f}")) ]
     users_data = csvdecode(file("./config/users.csv"))
@@ -42,6 +45,7 @@ module "users" {
   name = each.value.name
   groups = toset(split(":", each.value.groups))
   domain = local.domain
+  vault_store = local.vault_store
 }
 module "application" {
   depends_on = [
@@ -51,10 +55,13 @@ module "application" {
   source = "./modules/apps"
   name = each.value.name
   urls = each.value.urls
-  username = each.value.username
-  user_id = module.users[each.value.username].user_data["user_id"]
   locations = each.value.locations
   description = each.value.description
+  # If using vault store, pass in username and vault store data to retrieve user id
+  username = each.value.username
+  vault_store = local.vault_store
+  # If not using vault store, user and app creation will be coupled and ID will be collected from output of users module
+  user_id = module.users[each.value.username].user_data["user_id"]
 }
 output "test" {
   value = module.application

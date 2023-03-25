@@ -36,7 +36,7 @@ resource "zia_user_management" "user" {
 }
 
 resource "vault_kv_secret_v2" "vault_store_user_pass" {
-  mount               = "kv"
+  mount               = var.vault_store
   name                = var.name
   delete_all_versions = true
   data_json = jsonencode(
@@ -49,7 +49,8 @@ resource "vault_kv_secret_v2" "vault_store_user_pass" {
     data = {
 
       username = resource.zia_user_management.user.name,
-      email    = resource.zia_user_management.user.email
+      email    = resource.zia_user_management.user.email,
+      id       = resource.zia_user_management.user.id
     }
   }
 }
