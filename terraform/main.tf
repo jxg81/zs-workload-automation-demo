@@ -57,6 +57,7 @@ module "application" {
   urls = each.value.urls
   locations = each.value.locations
   description = each.value.description
+  source_ip_list = each.value.sourceIpList
   username = each.value.username
   vault_store = local.vault_store
 }

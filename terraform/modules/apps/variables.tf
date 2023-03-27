@@ -27,3 +27,7 @@ variable "vault_store" {
     type        = string
     description = "Vault store name"
 }
+variable "source_ip_list" {
+    type        = set(string)
+    description = "List of valid source IPs"
+}

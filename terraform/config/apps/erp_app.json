@@ -4,5 +4,6 @@
       "*.oracle.com"],
 "username": "erp_app",
 "locations": ["Home"],
-"description": "This is an ERP App"
+"description": "This is an ERP App",
+"sourceIpList": []
 }
