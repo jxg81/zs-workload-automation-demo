@@ -7,6 +7,7 @@ terraform {
 }
 
 data "vault_kv_secret_v2" "user_data" {
+  count = var.username == "" ? 0 : 1
   mount = var.vault_store
   name  = var.username
 }
