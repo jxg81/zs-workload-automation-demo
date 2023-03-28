@@ -40,9 +40,9 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
   nw_services {
     id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
   }
- # users {
- #    id = var.username != "" ? [tonumber(data.vault_kv_secret_v2.user_data[0].custom_metadata.id)] : []
- # }
+  users {
+     id = var.username != "" ? [tonumber(data.vault_kv_secret_v2.user_data[0].custom_metadata.id)] : []
+  }
   lifecycle {
     precondition {
       condition     = var.username != "" || length(var.source_ip_list) != 0

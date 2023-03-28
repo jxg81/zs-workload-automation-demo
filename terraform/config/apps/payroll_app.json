@@ -1,8 +1,17 @@
-{"name": "app_payroll",
-"urls": ["*.adp.com",
-        "*.xero.com"],
-"username": "",
-"locations": ["Home"],
-"description": "This is a Payroll App",
-"sourceIpList": ["192.168.0.0/24", "10.1.1.1", "172.16.0.1-172.16.0.50"]
+{
+    "name": "app_payroll",
+    "urls": [
+        "*.adp.com",
+        "*.xero.com"
+    ],
+    "username": "",
+    "locations": [
+        "Home"
+    ],
+    "description": "This is a Payroll App",
+    "sourceIpList": [
+        "192.168.0.0/24",
+        "10.1.1.1",
+        "172.16.0.1-172.16.0.50"
+    ]
 }
