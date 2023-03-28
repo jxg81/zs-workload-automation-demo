@@ -26,6 +26,11 @@ data "zia_firewall_filtering_network_service" "https" {
 }
 
 resource "zia_firewall_filtering_rule" "firewall_rule" {
+  depends_on = [
+    data.zia_location_management.location,
+    data.zia_firewall_filtering_network_service.http,
+    data.zia_firewall_filtering_network_service.https
+  ]
   name                = join(" ", [var.name, "application policy"])
   description         = join(" ", ["Policy for application", var.name])
   order               = var.order
@@ -35,8 +40,8 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
   dest_addresses      = var.urls
   src_ips             = var.source_ip_list
  locations {
-  #  id = [for item in data.zia_location_management.location : item.id]
-  id = [59629511]
+    id = [for item in data.zia_location_management.location : item.id]
+  # id = [59629511]
   }
   nw_services {
     id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
@@ -50,7 +55,4 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
       error_message = "Must provide either username, or source ip list or both"
     }
   }
-}
-output "test" {
-  value = [for item in data.zia_location_management.location : item.id]
 }
