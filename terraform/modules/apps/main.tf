@@ -34,15 +34,15 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
   enable_full_logging = true
   dest_addresses      = var.urls
   src_ips             = var.source_ip_list
- # locations {
- #   id = [for item in data.zia_location_management.location : item.id]
- # }
+ locations {
+    id = [for item in data.zia_location_management.location : item.id]
+  }
   nw_services {
     id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
   }
-  users {
-     id = var.username != "" ? [tonumber(data.vault_kv_secret_v2.user_data[0].custom_metadata.id)] : []
-  }
+ # users {
+ #    id = var.username != "" ? [tonumber(data.vault_kv_secret_v2.user_data[0].custom_metadata.id)] : []
+ # }
   lifecycle {
     precondition {
       condition     = var.username != "" || length(var.source_ip_list) != 0
@@ -51,5 +51,5 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
   }
 }
 output "test" {
-  value = data.zia_location_management.location
+  value = [for item in data.zia_location_management.location : item.id]
 }
