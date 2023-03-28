@@ -5,5 +5,5 @@
 "username": "erp_app",
 "locations": ["Home"],
 "description": "This is an ERP App",
-"sourceIpList": []
+"sourceIpList": ["10.1.1.1"]
 }

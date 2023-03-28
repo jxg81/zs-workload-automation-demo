@@ -27,6 +27,7 @@ resource "zia_user_management" "user" {
   name     = var.name
   email    = join("@", [var.name, var.domain])
   password = resource.random_password.user_password.result
+  auth_methods = ["BASIC"]
   groups {
     id = [for item in data.zia_group_management.group : item.id]
   }

@@ -15,7 +15,7 @@ terraform {
   }
   required_providers {
     zia = {
-      version = "2.4.6"
+      version = "2.5.0"
       source  = "zscaler/zia"
     }
     vault = {
@@ -61,4 +61,8 @@ module "application" {
   username       = each.value.username
   vault_store    = local.vault_store
   order          = index(local.apps_data, each.value)  + 5
+}
+
+output "testing" {
+  value = module.application
 }
