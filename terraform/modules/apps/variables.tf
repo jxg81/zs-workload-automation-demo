@@ -31,3 +31,7 @@ variable "source_ip_list" {
     type        = set(string)
     description = "List of valid source IPs"
 }
+variable "order" {
+    type = number
+    description = "The order of the rules"
+}

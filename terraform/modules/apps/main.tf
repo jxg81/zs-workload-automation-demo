@@ -27,7 +27,7 @@ data "zia_firewall_filtering_network_service" "https" {
 resource "zia_firewall_filtering_rule" "firewall_rule" {
   name                = join("-", [var.name, "application policy"])
   description         = join(" ", ["Policy for application", var.name])
-  order               = 0
+  order               = var.order
   action              = "ALLOW"
   state               = "ENABLED"
   enable_full_logging = true
@@ -39,6 +39,12 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     id = [data.zia_firewall_filtering_network_service.http.id, data.zia_firewall_filtering_network_service.https.id]
   }
   users {
-    id = [var.username == "" ? 0 : tonumber(data.vault_kv_secret_v2.user_data.custom_metadata.id)]
+    id = [tonumber(data.vault_kv_secret_v2.user_data.custom_metadata.id)]
+  }
+  lifecycle {
+    precondition { 
+      condition     = var.username != "" && var.source_ip_list != []
+      error_message = "Must provide either username, or source ip list or both"
+    }
   }
 }
