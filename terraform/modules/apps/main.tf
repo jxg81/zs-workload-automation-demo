@@ -50,6 +50,3 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
     }
   }
 }
-output "test" {
-  value = [for item in data.zia_location_management.location : item.id]
-}

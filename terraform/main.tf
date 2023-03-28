@@ -62,7 +62,3 @@ module "application" {
   vault_store    = local.vault_store
   order          = index(local.apps_data, each.value)  + 5
 }
-
-output "testing" {
-  value = module.application
-}

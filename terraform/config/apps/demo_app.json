@@ -1,0 +1,12 @@
+{
+    "name": "app_demo",
+    "urls": [
+          "*.terrform.io"
+    ],
+    "username": "demo_app",
+    "locations": [
+          "Home"
+    ],
+    "description": "This is a Demo App",
+    "sourceIpList": []
+}
