@@ -1,0 +1,12 @@
+{
+      "name": "app_this",
+      "urls": [
+            "*.youtube.com"
+      ],
+      "username": "this_app",
+      "locations": [
+            "Home"
+      ],
+      "description": "This is another App",
+      "sourceIpList": []
+}
