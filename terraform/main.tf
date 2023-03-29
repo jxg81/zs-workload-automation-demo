@@ -57,5 +57,8 @@ module "application" {
   source_ip_list = each.value.sourceIpList
   username       = each.value.username
   vault_store    = local.vault_store
-  order          = index(local.apps_data, each.value)  + 5
+  order          = index(local.apps_data, each.value) + 5
+  # The following line is only here becuase user and apps run in one workflow and i need to ensure any user creation occurs prior to trying to read data back from vault
+  # I was using depends_on but it was creating some odd issues
+  user_id        = module.users[each.value.username].user_data["user_id"]
 }

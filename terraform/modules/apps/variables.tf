@@ -35,3 +35,9 @@ variable "order" {
     type = number
     description = "The order of the rules"
 }
+  # The following variable is only here becuase user and apps run in one workflow and i need to ensure any user creation occurs prior to trying to read data back from vault
+  # I was using depends_on but it was creating some odd issues
+variable "user_id" {
+    type = number
+    description = "User id for user mapping"
+}
