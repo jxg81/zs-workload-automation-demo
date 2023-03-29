@@ -26,11 +26,6 @@ data "zia_firewall_filtering_network_service" "https" {
 }
 
 resource "zia_firewall_filtering_rule" "firewall_rule" {
-  depends_on = [
-    data.zia_location_management.location,
-    data.zia_firewall_filtering_network_service.http,
-    data.zia_firewall_filtering_network_service.https
-  ]
   name                = join(" ", [var.name, "application policy"])
   description         = join(" ", ["Policy for application", var.name])
   order               = var.order

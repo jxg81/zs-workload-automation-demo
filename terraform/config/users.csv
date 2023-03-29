@@ -2,3 +2,4 @@ name,groups
 erp_app,package_management:security_services
 web_app,package_management:security_services
 demo_app,package_management:security_services
+new_app,package_management:security_services

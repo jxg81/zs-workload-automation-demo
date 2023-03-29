@@ -48,9 +48,6 @@ module "users" {
   vault_store = local.vault_store
 }
 module "application" {
-  depends_on = [
-    module.users
-  ]
   for_each       = { for f in local.apps_data : f.name => f }
   source         = "./modules/apps"
   name           = each.value.name
