@@ -1,0 +1,14 @@
+{
+      "name": "app_another",
+      "urls": [
+            "*.zphyrs.com",
+            "dlp.zphyrs.com",
+            "202.171.171.27"
+      ],
+      "username": "another_app",
+      "locations": [
+            "Home"
+      ],
+      "description": "This is another App",
+      "sourceIpList": ["198.51.100.50"]
+}
