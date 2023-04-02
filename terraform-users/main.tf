@@ -27,7 +27,7 @@ locals {
   # Change this domain name to match the domain used in your ZIA tenant which you would like the users created in
   domain = "zphyrs.com"
   # Change this to macth the name of your vault store
-  vault_store     = "kv"
+  vault_store     = "a/long/path"
   users_data      = csvdecode(file("./config/users.csv"))
 }
 
