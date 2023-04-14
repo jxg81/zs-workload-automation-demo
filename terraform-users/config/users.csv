@@ -2,5 +2,3 @@ name,groups
 erp_app,package_management:security_services
 web_app,package_management:security_services
 demo_app,package_management:security_services
-another_app,package_management:security_services
-this_app,package_management
