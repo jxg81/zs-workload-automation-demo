@@ -27,15 +27,16 @@ locals {
   # Change this domain name to match the domain used in your ZIA tenant which you would like the users created in
   domain = "zphyrs.com"
   # Change this to macth the name of your vault store
-  vault_store     = "kv"
-  users_data      = csvdecode(file("./config/users.csv"))
+  vault_store = "kv"
+  users_data  = csvdecode(file("./config/users.csv"))
 }
 
 module "users" {
-  for_each    = { for f in local.users_data : f.name => f }
-  source      = "./modules/users"
-  name        = each.value.name
-  groups      = toset(split(":", each.value.groups))
-  domain      = local.domain
-  vault_store = local.vault_store
+  for_each         = { for f in local.users_data : f.name => f }
+  source           = "./modules/users"
+  name             = each.value.name
+  groups           = toset(split(":", each.value.groups))
+  domain           = local.domain
+  vault_store      = local.vault_store
+  password_control = local.password_control
 }

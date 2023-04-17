@@ -11,6 +11,7 @@ resource "random_password" "user_password" {
   special = true
   keepers = {
     user_name = var.name
+    rotation  = var.password_control
   }
 }
 
@@ -24,9 +25,9 @@ data "zia_department_management" "workloads" {
 }
 
 resource "zia_user_management" "user" {
-  name     = var.name
-  email    = join("@", [var.name, var.domain])
-  password = resource.random_password.user_password.result
+  name         = var.name
+  email        = join("@", [var.name, var.domain])
+  password     = resource.random_password.user_password.result
   auth_methods = ["BASIC"]
   groups {
     id = [for item in data.zia_group_management.group : item.id]

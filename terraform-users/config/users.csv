@@ -1,4 +1,4 @@
-name,groups
-erp_app,package_management:security_services
-web_app,package_management:security_services
-demo_app,package_management:security_services
+name,password_control,groups
+erp_app,random_value,package_management:security_services
+web_app,0947502,package_management:security_services
+demo_app,h124,package_management:security_services
