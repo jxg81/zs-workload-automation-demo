@@ -35,8 +35,8 @@ module "users" {
   for_each         = { for f in local.users_data : f.name => f }
   source           = "./modules/users"
   name             = each.value.name
+  password_control = each.value.password_control
   groups           = toset(split(":", each.value.groups))
   domain           = local.domain
   vault_store      = local.vault_store
-  password_control = local.password_control
 }
