@@ -20,8 +20,8 @@ data "zia_group_management" "group" {
   name     = each.value
 }
 
-data "zia_department_management" "workloads" {
-  name = "workloads"
+data "zia_department_management" "department" {
+  name = var.department
 }
 
 resource "zia_user_management" "user" {
@@ -33,7 +33,7 @@ resource "zia_user_management" "user" {
     id = [for item in data.zia_group_management.group : item.id]
   }
   department {
-    id = data.zia_department_management.workloads.id
+    id = data.zia_department_management.department.id
   }
 }
 

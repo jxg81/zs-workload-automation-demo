@@ -10,11 +10,14 @@ variable "groups" {
   type        = set(string)
   description = "User group assignments"
 }
+variable "department" {
+  type        = string
+  description = "User department assignment"
+}
 variable "vault_store" {
   type        = string
   description = "Vault store name"
 }
-
 variable "password_control" {
   type        = string
   description = "Random string to manage password chnages"
