@@ -1,4 +1,3 @@
-# Test
 terraform {
   cloud {
     # Set this value to match your terrafrom cloud organisation name
