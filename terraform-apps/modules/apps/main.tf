@@ -14,8 +14,8 @@ data "vault_kv_secret_v2" "user_data" {
 
 data "zia_location_management" "location" {
   for_each = var.locations
-  name     = toset(split(":", each.value))[1]
-  parent_name = toset(split(":", each.value))[0]
+  name     = split(":", each.value)[1]
+  parent_name = split(":", each.value)[0]
 }
 
 data "zia_firewall_filtering_network_service" "http" {
