@@ -9,7 +9,7 @@ terraform {
   }
   required_providers {
     zia = {
-      version = "2.5.1"
+      version = "2.5.2"
       source  = "zscaler/zia"
     }
     vault = {
