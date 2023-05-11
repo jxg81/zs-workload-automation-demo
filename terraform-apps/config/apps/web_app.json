@@ -7,7 +7,7 @@
     ],
     "username": "web_app",
     "locations": [
-        "Home"
+        "Home:Home-Server"
     ],
     "description": "This is a Web App",
     "sourceIpList": [
