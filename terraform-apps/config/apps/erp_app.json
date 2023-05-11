@@ -7,7 +7,7 @@
       ],
       "username": "erp_app",
       "locations": [
-            "Home:Home-Server"
+            "Home:Server"
       ],
       "description": "This is an ERP App",
       "sourceIpList": []
