@@ -10,5 +10,6 @@
             "Home:Server"
       ],
       "description": "This is an ERP App",
-      "sourceIpList": []
+      "sourceIpList": [],
+      "enable": true
 }

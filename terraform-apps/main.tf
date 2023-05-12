@@ -40,6 +40,7 @@ module "application" {
   locations      = each.value.locations
   description    = each.value.description
   source_ip_list = each.value.sourceIpList
+  rule_state     = each.value.enable == true ? "ENABLED" : "DISABLED"
   username       = each.value.username
   vault_store    = local.vault_store
   order          = index(local.apps_data, each.value) + 5

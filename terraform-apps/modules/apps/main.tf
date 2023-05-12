@@ -31,7 +31,7 @@ resource "zia_firewall_filtering_rule" "firewall_rule" {
   description         = join(" ", ["Policy for application", var.name])
   order               = var.order
   action              = "ALLOW"
-  state               = "ENABLED"
+  state               = var.rule_state
   enable_full_logging = true
   dest_addresses      = var.urls
   src_ips             = var.source_ip_list

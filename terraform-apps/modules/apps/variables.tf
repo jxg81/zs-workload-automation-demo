@@ -31,6 +31,11 @@ variable "source_ip_list" {
   type        = set(string)
   description = "List of valid source IPs"
 }
+
+variable "rule_state" {
+  type        = string
+  description = "Set if the rule is enabled or disabled"
+}
 variable "order" {
   type        = number
   description = "The order of the rules"
