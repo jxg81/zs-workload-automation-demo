@@ -38,6 +38,7 @@ module "users" {
   password_control = each.value.password_control
   groups           = toset(split(":", each.value.groups))
   department       = each.value.department
+  special          = each.value.special
   domain           = local.domain
   vault_store      = local.vault_store
 }

@@ -8,7 +8,7 @@ terraform {
 
 resource "random_password" "user_password" {
   length  = 16
-  special = true
+  special = var.special
   keepers = {
     user_name = var.name
     rotation  = var.password_control

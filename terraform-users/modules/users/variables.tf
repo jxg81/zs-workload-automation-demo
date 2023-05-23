@@ -22,3 +22,7 @@ variable "password_control" {
   type        = string
   description = "Random string to manage password chnages"
 }
+variable "special" {
+  type        = bool
+  description = "Require special characters in password"
+}
