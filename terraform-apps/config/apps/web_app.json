@@ -2,8 +2,7 @@
     "name": "app_web",
     "urls": [
         "*.facebook.com",
-        "*.twitter.com",
-        "*.instagram.com"
+        "*.twitter.com"
     ],
     "username": "web_app",
     "locations": [
