@@ -1,3 +1,4 @@
+#!/bin/bash
 epoch=$(date +%s000)
 mykey=$ZIA_API_KEY
 
