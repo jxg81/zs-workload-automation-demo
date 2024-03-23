@@ -1,5 +1,5 @@
 name,password_control,groups,department,special
-erp1_app,r21,package_management:security_services,workloads,true
-web1_app,33,package_management:security_services,workloads,true
+erp_app,rr21,package_management:security_services,workloads,false
+web_app,e33,package_management:security_services,workloads,false
 demo_app,h124,package_management:security_services,workloads,false
 user_test_auto,h124,package_management:security_services,workloads,false

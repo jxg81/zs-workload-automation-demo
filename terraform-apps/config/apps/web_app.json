@@ -4,7 +4,7 @@
         "*.facebook.com",
         "*.twitter.com"
     ],
-    "username": "web1_app",
+    "username": "web_app",
     "locations": [
         "Home:Server"
     ],
