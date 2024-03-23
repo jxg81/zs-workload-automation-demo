@@ -1,5 +1,5 @@
 name,password_control,groups,department,special
-erp_app,random_value,package_management:security_services,workloads,true
-web_app,411,package_management:security_services,workloads,true
+erp1_app,random_value,package_management:security_services,workloads,true
+web1_app,411,package_management:security_services,workloads,true
 demo_app,h124,package_management:security_services,workloads,false
 user_test_auto,h124,package_management:security_services,workloads,false
