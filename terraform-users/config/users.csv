@@ -3,3 +3,4 @@ erp_app,rr21c,package_management:security_services,workloads,false
 web_app,e33,package_management:security_services,workloads,false
 demo_app,h124,package_management:security_services,workloads,false
 user_test_auto,h124c,package_management:security_services,workloads,false
+new_user,h124c,package_management:security_services,workloads,false
