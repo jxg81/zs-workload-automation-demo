@@ -2,6 +2,8 @@
       "name": "app_erp",
       "urls": [
             "*.sap.com",
+            "*.ipinfo.io",
+            "ipinfo.io",
             "my.salesforce.com",
             "198.51.100.10"
       ],
